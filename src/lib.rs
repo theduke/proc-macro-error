@@ -456,12 +456,12 @@ where
             if err_storage.is_empty() {
                 ts
             } else {
-                gen_error().into()
+                ts
             }
         }
 
         Err(boxed) => match boxed.downcast::<AbortNow>() {
-            Ok(_) => gen_error().into(),
+            Ok(_) => Default::default(),
             Err(boxed) => resume_unwind(boxed),
         },
     }
@@ -546,8 +546,8 @@ pub mod __export {
     impl SpanAsSpanRange for proc_macro::Span {
         fn FIRST_ARG_MUST_EITHER_BE_Span_OR_IMPLEMENT_ToTokens_OR_BE_SpanRange(&self) -> SpanRange {
             SpanRange {
-                first: self.clone().into(),
-                last: self.clone().into(),
+                first: proc_macro2::Span::call_site(),
+                last: proc_macro2::Span::call_site(),
             }
         }
     }
